@@ -1,19 +1,33 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"  // Change to your database provider (e.g., mysql, sqlite)
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+enum RecordStatus {
+  active
+  inactive
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  username    String       @unique
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  recordStatus RecordStatus @default(active)
+  auth        Auth[]       @relation
+}
+
+model Auth {
+  id          Int          @id @default(autoincrement())
+  accessToken String       @unique
+  createdAt   DateTime     @default(now())
+  recordStatus RecordStatus @default(active)
+  userId      Int
+  user        User         @relation(fields: [userId], references: [id])
 }

@@ -10,7 +10,9 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('NestJs Documentation Implementation')
-    .setDescription('This swagger docs covers the implementation of nestjs implementation for learning through nestjs docs.')
+    .setDescription(
+      'This swagger docs covers the implementation of nestjs implementation for learning through nestjs docs.',
+    )
     .setVersion('1.0')
     .addTag('NestJs')
     .build()
