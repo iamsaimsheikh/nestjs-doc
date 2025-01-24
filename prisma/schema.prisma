@@ -21,6 +21,7 @@ model User {
   updatedAt   DateTime     @updatedAt
   recordStatus RecordStatus @default(active)
   auth        Auth[]       @relation
+  forgotPassword ForgotPassword? @relation
 }
 
 model Auth {
@@ -29,5 +30,14 @@ model Auth {
   createdAt   DateTime     @default(now())
   recordStatus RecordStatus @default(active)
   userId      Int
+  user        User         @relation(fields: [userId], references: [id])
+}
+
+model ForgotPassword {
+  id          Int          @id @default(autoincrement())
+  token       String       @unique
+  createdAt   DateTime     @default(now())
+  recordStatus RecordStatus @default(active)
+  userId      Int         @unique
   user        User         @relation(fields: [userId], references: [id])
 }

@@ -26,19 +26,16 @@ export class UserService {
     })
   }
 
-  // Get all users
   async findAll() {
     return this.prisma.user.findMany()
   }
 
-  // Get a single user by ID
   async findOne(id: number) {
     return this.prisma.user.findUnique({
       where: { id },
     })
   }
 
-  // Update a user
   async update(id: number, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: { id },
@@ -46,7 +43,6 @@ export class UserService {
     })
   }
 
-  // Delete a user
   async remove(id: number) {
     return this.prisma.user.delete({
       where: { id },

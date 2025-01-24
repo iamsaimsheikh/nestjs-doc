@@ -2,9 +2,14 @@ import { NestFactory } from '@nestjs/core'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import { AppModule } from './app.module'
 import { INestApplication, ValidationPipe } from '@nestjs/common'
+import { MyLogger } from 'middleware/logger.middleware'
 
 async function bootstrap() {
-  const app: INestApplication = await NestFactory.create(AppModule)
+  const logger = new MyLogger()
+  logger.autoClearConsole()
+  const app: INestApplication = await NestFactory.create(AppModule, {
+    logger: logger,
+  })
 
   app.useGlobalPipes(new ValidationPipe())
 
