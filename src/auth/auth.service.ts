@@ -52,7 +52,7 @@ export class AuthService {
     return { accessToken }
   }
 
-  async forgotPassword(email: string): Promise<Object> {
+  async forgotPassword(email: string): Promise<{ resetLink: string }> {
     const user = await this.prisma.user.findUnique({
       where: { email },
     })
@@ -74,14 +74,12 @@ export class AuthService {
     const token = this.jwtService.sign({ sub: user.id })
     const resetLink = `http://localhost:3000/reset-password?token=${token}`
 
-    const createForgotPasswordRequest = await this.prisma.forgotPassword.create(
-      {
-        data: {
-          userId: user.id,
-          token,
-        },
+    await this.prisma.forgotPassword.create({
+      data: {
+        userId: user.id,
+        token,
       },
-    )
+    })
 
     return { resetLink }
   }
@@ -90,7 +88,7 @@ export class AuthService {
     token: string,
     newPassword: string,
     confirmPassword: string,
-  ): Promise<Object> {
+  ): Promise<{ message: string }> {
     if (newPassword !== confirmPassword) {
       throw new BadRequestException('Passwords do not match')
     }
